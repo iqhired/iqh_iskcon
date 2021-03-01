@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/pilgrimage/public_html/
+    - export DEPLOYPATH=/home/pilgrimage/public_html/iskcon
     - /bin/cp -R * $DEPLOYPATH
