@@ -14,10 +14,11 @@ if (isset($_POST['name']) && isset($_POST['number'])
     $url = '';
     if( empty($live_mode) || $live_mode == 'disable' ){
         $url = 'https://test.instamojo.com/api/1.1/payment-requests/';
-        $mode = 'test';
+        $mode = 'test.instamojo.com/@ashams001/';
     }else{
         $url = 'https://www.instamojo.com/api/1.1/payment-requests/';
-        $mode = 'www';
+//        $mode = 'www';
+        $mode = 'www.instamojo.com/@Iskcon_Bangalore/';
     }
     $api_key = "X-Api-Key:" . $instamojo_api_key;
     $auth_token = "X-Auth-Token:" . $instamojo_auth_token;
@@ -45,18 +46,19 @@ if (isset($_POST['name']) && isset($_POST['number'])
     curl_setopt($ch, CURLOPT_HTTPHEADER,
         array($api_key,$auth_token));
 
-    $baseUrl = "http://localhost:8888/";
+//    $baseUrl = "http://localhost:8888/";
 //     $baseUrl = "https://iskcon.iqdemopro.com/";
-    $liveUrl = "https://iskcon.iqdemopro.com/";
+//    $liveUrl = "https://iskcon.iqdemopro.com/";
+    $current_url = (is_ssl()? "https": "http") . "://" . $_SERVER['HTTP_HOST'];
 
     $payload = Array(
         'purpose' => 'Pilgrimage Bookings',
         'amount' => $amount,
         'phone' => $number,
         'buyer_name' => $name,
-        'redirect_url' => $baseUrl.'?tourmaster-payment',
+        'redirect_url' => $current_url.'?tourmaster-payment',
         'send_email' => true,
-        'webhook' => $liveUrl.'wp-content/plugins/pilgrimagetourmaster/include/instamojo/webhook.php',
+        'webhook' => $current_url.'/wp-content/plugins/pilgrimagetourmaster/include/instamojo/webhook.php',
         'send_sms' => false,
         'email' => $email,
         'allow_repeated_payments' => false
@@ -75,7 +77,7 @@ if (isset($_POST['name']) && isset($_POST['number'])
 
         echo '<script src="https://js.instamojo.com/v1/checkout.js"></script>
         <script>
-            Instamojo.open("https://'.$mode.'.instamojo.com/@ashams001/'.$payment_id.'"); 
+            Instamojo.open("https://'.$mode.$payment_id.'"); 
         </script> ';
 
         //and for redirect to payment page, use this and uncomment the header() below.
